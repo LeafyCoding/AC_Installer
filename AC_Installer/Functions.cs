@@ -121,19 +121,21 @@ namespace AC_Installer
 
         public static int CheckDxVersion()
         {
-            Process.Start("dxdiag", "/x dxv.xml");
-            Thread.Sleep(500);
-            while (!File.Exists("dxv.xml"))
+            using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\DirectX"))
             {
-                Thread.Sleep(100);
-            }
-            var doc = new XmlDocument();
-            doc.Load("dxv.xml");
-            var dxd = doc.SelectSingleNode("//DxDiag");
-            var dxv = dxd?.SelectSingleNode("//DirectXVersion");
+                var versionStr = key?.GetValue("Version").ToString();
+                if (string.IsNullOrEmpty(versionStr)) return 0;
 
-            File.Delete("dxv.xml");
-            return dxv == null ? 0 : Convert.ToInt32(dxv.InnerText);
+                var versionComponents = versionStr.Split('.');
+                if (versionComponents.Length <= 1) return 0;
+
+                int directXVersion;
+                if (int.TryParse(versionComponents[1], out directXVersion))
+                {
+                    return directXVersion;
+                }
+            }
+            return 0;
         }
 
         public static bool CheckNetVersion() => Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full") != null;
