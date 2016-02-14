@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------------------
 // This program is private software, based on C# source code.
 // To sell or change credits of this software is forbidden,
-// except if someone approves it from AC_Installer INC. team.
+// except if someone approves it from the LeafyCoding INC. team.
 // -----------------------------------------------------------
 // Copyrights (c) 2016 AC_Installer INC. All rights reserved.
 // -----------------------------------------------------------
@@ -9,12 +9,9 @@
 #region
 
 using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
-using System.Threading;
-using System.Xml;
 using Microsoft.Win32;
 
 #endregion
@@ -78,16 +75,6 @@ namespace AC_Installer
             Console.ForegroundColor = originalColor;
         }
 
-        public static void SemiColoredWrite(ConsoleColor color, string coloredText, string noColorText, bool newLine)
-        {
-            var originalColor = Console.ForegroundColor;
-            Console.ForegroundColor = color;
-            Console.Write(coloredText);
-            Console.ForegroundColor = originalColor;
-            var writer = newLine ? noColorText + Environment.NewLine : noColorText;
-            Console.Write(writer);
-        }
-
         public static void KillMe(string reason)
         {
             ColoredWrite(ConsoleColor.Red, reason, true);
@@ -138,13 +125,15 @@ namespace AC_Installer
             return 0;
         }
 
-        public static bool CheckNetVersion() => Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full") != null;
+        public static bool CheckNetVersion()
+            => Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full") != null;
 
         public static bool DownloadAcu()
         {
             try
             {
-                new WebClient().DownloadFile(new Uri("http://dl.auracore.net/updater/acu/files?get=ACU.exe"), $"{Program.InstallDir}\\ACU.exe");
+                new WebClient().DownloadFile(new Uri("http://dl.auracore.net/updater/acu/files?get=ACU.exe"),
+                    $"{Program.InstallDir}\\ACU.exe");
                 return true;
             }
             catch (Exception ex)

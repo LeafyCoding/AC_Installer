@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------------------
 // This program is private software, based on C# source code.
 // To sell or change credits of this software is forbidden,
-// except if someone approves it from AC_Installer INC. team.
+// except if someone approves it from the LeafyCoding INC. team.
 // -----------------------------------------------------------
 // Copyrights (c) 2016 AC_Installer INC. All rights reserved.
 // -----------------------------------------------------------
